@@ -10,15 +10,20 @@ public class CreateContactCommand : IRequest<ContactCreateResponse>
 {
     public CreateContactCommand(
         string firstName,
-        string secondName
+        string secondName,
+        DateTime birthDay
     )
     {
         FirstName = firstName;
         SecondName = secondName;
+        BirthDay = birthDay;
     }
 
     public string FirstName { get; set; }
     public string SecondName { get; set; }
+    
+    public DateTime? BirthDay { get; set; }
+
 
 
 }
@@ -31,6 +36,7 @@ public static class CreateContactCommandExtension
             {
                 FirstName = command.FirstName,
                 SecondName = command.SecondName,
+                BirthDay = command.BirthDay
             }
             ;
     }

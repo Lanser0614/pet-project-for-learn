@@ -1,3 +1,4 @@
+using System.Net;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -79,16 +80,48 @@ public class ContactController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreatePhoneForContact([FromBody] CreatePhoneForContactRequest request)
+    public async Task<IActionResult> MassCreatePhoneForContact([FromBody] CreatePhoneForContactRequest request)
     {
-        var massCreatePhoneCommand = new MassCreatePhoneCommand(
-            request.ContactId, request.Phones
-        );
+        MassCreatePhoneCommand massCreatePhoneCommand = _mapper.Map<MassCreatePhoneCommand>(request);
         var result = await _mediator.Send(massCreatePhoneCommand);
         var ok = new Dictionary<string, int>()
         {
             { "is succsus cont", result }
         };
         return Ok(ok);
+    }
+    
+    [HttpPost]
+    public async Task<IActionResult> MassCreateEmailForContact([FromBody] MassCreateEmailForContactRequest request)
+    {
+        MassCreateEmailForContactCommand massCreateEmailForContactCommand = _mapper.Map<MassCreateEmailForContactCommand>(request);
+        var result = await _mediator.Send(massCreateEmailForContactCommand);
+        var ok = new Dictionary<string, int>()
+        {
+            { "is succsus cont", result }
+        };
+        return Ok(ok);
+    }
+    
+    [HttpPost]
+    public async Task<IActionResult> MassUpdateEmailForContact([FromBody] MassUpdateEmailForContactRequest request)
+    {
+        MassUpdateEmailForContactCommand massCreateEmailForContactCommand = _mapper.Map<MassUpdateEmailForContactCommand>(request);
+        var result = await _mediator.Send(massCreateEmailForContactCommand);
+        var ok = new Dictionary<string, int>()
+        {
+            { "is succsus cont", result }
+        };
+        return Ok(ok);
+    }
+    
+    [HttpDelete]
+    [Route("{id}")]
+    public async Task<IActionResult> DeleteContact(long id)
+    {
+        var command = new DeleteContactCommand(id);
+        await _mediator.Send(command);
+
+        return Ok(HttpStatusCode.NoContent);
     }
 }

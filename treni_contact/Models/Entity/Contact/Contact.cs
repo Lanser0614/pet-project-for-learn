@@ -12,6 +12,7 @@ public class Contact
     public string FirstName { get; set; }
     public string SecondName { get; set; }
     
+    public DateTime? BirthDay { get; set; }
     public ICollection<Phone> Phones { get; set; }
     
     public ICollection<Email> Emails { get; set; }
