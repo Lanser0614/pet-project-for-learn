@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using treni_contact.Models.Entity.User;
 
 namespace treni_contact.Http.Requests.Contact;
 
@@ -11,4 +12,7 @@ public class ContactCreateRequest
     public string SecondName { get; set; }
     
     public DateTime? BirthDay { get; set; }
+
+    public string? UserName { get; set; }
+    
 }

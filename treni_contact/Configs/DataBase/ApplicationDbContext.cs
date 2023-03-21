@@ -1,19 +1,26 @@
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using treni_contact.Models;
 using treni_contact.Models.Contact;
 using treni_contact.Models.Entity.Email;
 using treni_contact.Models.Entity.Phone;
+using treni_contact.Models.Entity.Role;
+using treni_contact.Models.Entity.User;
 
 namespace treni_contact.Configs.DataBase;
 
-public class ApplicationDbContext : DbContext
+public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options)
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        : base(options)
     {
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+        
+       
+        
         modelBuilder.Entity<Contact>().HasKey(x => x.Id);
         // modelBuilder.Entity<Contact>().HasMany(typeof(Phone));
         // modelBuilder.Entity<Contact>().HasMany(typeof(Email));

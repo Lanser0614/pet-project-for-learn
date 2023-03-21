@@ -1,14 +1,18 @@
 using System.Net;
 using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using treni_contact.Application.Commands.Contact;
 using treni_contact.Application.Query.Contact;
 using treni_contact.Http.Requests.Contact;
 using treni_contact.Http.Responses.Contact;
+using treni_contact.Models.Entity.User;
 
 namespace treni_contact.Http.Controllers.Contact;
 
+[Authorize(AuthenticationSchemes = "Bearer")]
 [ApiController]
 [Route("api/[controller]/[action]")]
 public class ContactController : ControllerBase
@@ -27,6 +31,8 @@ public class ContactController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> StoreContacts([FromBody] ContactCreateRequest request)
     {
+        var userName = HttpContext.User.Identity?.Name;
+        request.UserName = userName;
         /*
          * без аutoMaper
          */
@@ -40,13 +46,17 @@ public class ContactController : ControllerBase
         /*
         * с аutoMaper
         */
+
+       
         CreateContactCommand createContactCommand = _mapper.Map<CreateContactCommand>(request);
 
+        
         var contact = await _mediator.Send(createContactCommand);
 
         return Ok(contact);
     }
 
+    [Authorize(AuthenticationSchemes = "Bearer")]
     [HttpGet]
     public async Task<IActionResult> GetAllContact([FromQuery] ContactCollectionRequest filter)
     {

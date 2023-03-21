@@ -19,6 +19,9 @@ public class Handler : AbstractExceptionHandler
             case DataBaseException:
                 code = HttpStatusCode.NotFound;
                 break;
+            case UnauthorizedAccessException:
+                code = HttpStatusCode.Unauthorized;
+                break;
             default:
                 code = HttpStatusCode.InternalServerError;
                 break;
